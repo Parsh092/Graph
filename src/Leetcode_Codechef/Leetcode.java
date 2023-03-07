@@ -1,6 +1,6 @@
 //import java.util.*;
 //
-//public class Graph {
+//public class Leetcode {
 //    public static void main(String[] args) {
 //       Scanner sc = new Scanner(System.in);
 //       String pattern = sc.next();
