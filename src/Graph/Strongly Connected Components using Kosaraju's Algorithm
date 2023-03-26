@@ -1,4 +1,5 @@
-import java.util.*;
+GFG : Strongly Connected Components (Kosaraju's Algo)
+
 class Solution
 {
     public void dfs(int node,int[] visited,Stack<Integer> st,
