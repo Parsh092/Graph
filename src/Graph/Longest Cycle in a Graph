@@ -28,5 +28,23 @@ class Solution {
         if(size<=1)
         return -1;
         return size;
-    }  
+    }
+
+    public void topo(int node,Stack<Integer>s,boolean[] vis,int[] edges){
+        vis[node]=true;
+        int child=edges[node];
+        if(child !=-1 && !vis[child])
+        topo(child,s,vis,edges);
+        
+        s.push(node);
+    }
+
+    public int dfs(int node,boolean[] vis,List<List<Integer>> rev){
+        vis[node]=true;
+        int count=1;
+        for(int child : rev.get(node))
+        if(!vis[child])
+        count+=dfs(child,vis,rev);
+        return count;
+    }
 }
