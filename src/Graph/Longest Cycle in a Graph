@@ -1,0 +1,32 @@
+2350.Longest Cycle in a Graph (Leetcode Question)
+
+class Solution {
+    public int longestCycle(int[] edges) {
+        int n=edges.length;
+        Stack<Integer> s=new Stack<>();
+        boolean[] vis=new boolean[n];
+        for(int i=0;i<n;i++)
+        if(!vis[i])
+        topo(i,s,vis,edges);
+        
+        List<List<Integer>> rev=new ArrayList<>();
+        for(int i=0;i<n;i++)
+        rev.add(new ArrayList<Integer>());
+
+        for(int i=0;i<n;i++){
+            vis[i]=false;
+            if(edges[i]!=-1)
+        rev.get(edges[i]).add(i);
+        }
+        
+        int size=0;
+        while(!s.isEmpty()){
+            int node=s.pop();
+            if(!vis[node])
+            size=Math.max(size,dfs(node,vis,rev));
+        }
+        if(size<=1)
+        return -1;
+        return size;
+    }  
+}
