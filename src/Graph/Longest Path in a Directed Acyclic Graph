@@ -1,0 +1,56 @@
+class Pair{
+    int node;
+    int dis;
+    public Pair(int node,int dis){
+        this.node = node;
+        this.dis = dis;
+    }
+}
+class Solution {
+    
+    static void dfs(int node,ArrayList<ArrayList<Pair>> adj,boolean[] visited,
+    Stack<Integer> st){
+        visited[node]=true;
+        for(Pair adjNode : adj.get(node)){
+            int an = adjNode.node;
+            if(!visited[an]){
+                dfs(an,adj,visited,st); 
+            }
+        }
+        st.push(node);
+    }
+    
+    public static int [] maximumDistance(int v, int e, int src, int[][] edges) {
+        
+        ArrayList<ArrayList<Pair>> adj = new ArrayList<>();
+        
+        for(int i=0;i<v;i++){
+            adj.add(new ArrayList<>());
+        }
+        
+        for(int i=0;i<e;i++){
+            adj.get(edges[i][0]).add(new Pair(edges[i][1],edges[i][2]));
+        }
+        
+        Stack<Integer> st = new Stack<>();
+        boolean[] visited = new boolean[v];
+        dfs(src,adj,visited,st);
+        
+        int[] dis = new int[v];
+        Arrays.fill(dis,Integer.MIN_VALUE);
+        dis[src]=0;
+        
+        while(!st.isEmpty()){
+            int n = st.pop();
+            for(Pair no : adj.get(n)){
+                int adjNOde = no.node;
+                int distance = no.dis;
+                if(dis[adjNOde]<dis[n]+distance){
+                    dis[adjNOde] = dis[n] + distance;
+                }
+            }
+        }
+        return dis;
+        
+    }
+}
