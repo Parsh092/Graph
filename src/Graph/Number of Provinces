@@ -1,0 +1,78 @@
+// By Union Find (Disjointset DS)
+class disjoint{
+    ArrayList<Integer> parent = new ArrayList<>();
+    ArrayList<Integer> size = new ArrayList<>();
+    public disjoint(int n){
+        for(int i=0;i<=n;i++){
+            parent.add(i);
+            size.add(0);
+        }
+    }
+    public int findUpar(int i){
+        if(parent.get(i)==i) return i;
+        int par = findUpar(parent.get(i));
+        parent.set(i,par);
+        return parent.get(i);
+    }
+    public void UnionBySize(int u,int v){
+        int ult_pu = findUpar(u);
+        int ult_pv = findUpar(v);
+        if(ult_pu==ult_pv) return;
+        if(size.get(ult_pu)>size.get(ult_pv)){
+            size.set(ult_pu,size.get(ult_pu)+size.get(ult_pv));
+            parent.set(ult_pv,ult_pu);
+        }
+        else{
+            size.set(ult_pv,size.get(ult_pu)+size.get(ult_pv));
+            parent.set(ult_pv,ult_pu);
+        }
+
+    }
+}
+class Solution {
+    public int findCircleNum(int[][] isConnected) {
+        int n = isConnected.length;
+        disjoint ds = new disjoint(n);
+        for(int i=0;i<n;i++){
+           for(int j=0;j<isConnected[0].length;j++){
+               if(isConnected[i][j]==1){
+                   ds.UnionBySize(i,j);
+               }
+           }
+        }
+        int count=0;
+        for(int i=0;i<n;i++){
+            if(ds.parent.get(i)==i) count++;
+        }
+        return count;
+    }
+}
+
+
+// By DFS
+class Solution {
+    public int findCircleNum(int[][] isConnected) {
+          int n = isConnected.length;
+         ArrayList<ArrayList<Integer>> adj_list = new ArrayList<>();
+         for(int i=0;i<n;i++){
+            adj_list.add(new ArrayList<>());
+        }
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(isConnected[i][j]==1 && i!=j){
+                adj_list.get(i).add(j);
+                adj_list.get(j).add(i);
+                }
+            }
+        }
+        boolean [] visited = new boolean[n];
+        int count=0;
+        for(int i=0;i<n;i++){
+            if(!visited[i]){
+                dfs(i,visited,adj_list);
+                count++;
+            }
+        }
+        return count;
+    }
+}
